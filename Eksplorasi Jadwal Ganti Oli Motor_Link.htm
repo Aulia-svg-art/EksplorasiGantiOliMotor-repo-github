@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <title>Eksplorasi Jadwal Ganti Oli</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #cce5ff, #ffffff);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.5s ease;
+    }
+    h1 {
+      color: #003366;
+    }
+    p {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 8px;
+      width: 200px;
+      margin: 10px 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: #ffffff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #0077cc;
+      color: white;
+    }
+    .slide {
+      display: none;
+      animation: fade 1s;
+    }
+    .active {
+      display: block;
+    }
+    @keyframes fade {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Slide 1 -->
+  <div id="slide1" class="slide active">
+    <h1>Eksplorasi Jadwal Ganti Oli</h1>
+    <p>Masukkan jarak tempuh rata-rata kendaraanmu per hari (km):</p>
+    <input type="number" id="jarak" placeholder="Misal: 50" value="30">
+    <button onclick="hitungJadwal()">Hitung Jadwal</button>
+
+    <div id="hasil"><h2>Jadwal Ganti Oli</h2><table><tbody><tr><th>Pergantian ke-</th><th>Hari ke-</th></tr><tr><td>1</td><td>100</td></tr></tbody></table></div>
+
+    <button onclick="keSlide2()">Lanjut ke Slide 2 ➡</button>
+  </div>
+
+  <!-- Slide 2 -->
+  <div id="slide2" class="slide">
+    <h1>Eksplorasi Rumus Suku ke-n</h1>
+    <p>Barisan aritmatika terbentuk dari pola penggantian oli kendaraan.<br> Temukan rumus untuk hari keberapa kendaraan harus ganti oli!</p>
+
+    <input type="number" id="inputJarakPerHari" placeholder="Jarak tempuh per hari (km)"><br>
+    <input type="number" id="inputJarakGantiOli" placeholder="Jarak tiap ganti oli (km)"><br>
+    <input type="number" id="inputSukuN" placeholder="Pergantian ke-n"><br>
+
+    <button onclick="hitungSukuN()">Hitung Hari ke-n</button>
+
+    <h2 id="hasilSukuN">Hari ke-3 untuk pergantian oli ke-3</h2>
+
+    <button onclick="keSlide1()">⬅ Kembali ke Slide 1</button>
+  </div>
+
+  <script>
+    function hitungJadwal() {
+      var jarakPerHari = document.getElementById("jarak").value;
+      if (jarakPerHari <= 0 || jarakPerHari == "") {
+          alert("Masukkan jarak tempuh yang valid!");
+          return;
+      }
+      var jarakOli = 3000; // Tetap 3000 km
+      var hariPerGanti = Math.ceil(jarakOli / jarakPerHari);
+      var jumlahBulan = 6; // 6 bulan eksplorasi
+      var totalHari = jumlahBulan * 30;
+      var hasilHTML = "<h2>Jadwal Ganti Oli</h2>";
+      hasilHTML += "<table><tr><th>Pergantian ke-</th><th>Hari ke-</th></tr>";
+      
+      var pergantian = 1;
+      for (var hari = hariPerGanti; hari <= totalHari; hari += hariPerGanti) {
+          hasilHTML += "<tr><td>" + pergantian + "</td><td>" + hari + "</td></tr>";
+          pergantian++;
+      }
+      hasilHTML += "</table>";
+      document.getElementById("hasil").innerHTML = hasilHTML;
+    }
+
+    function keSlide2() {
+      document.getElementById("slide1").classList.remove("active");
+      document.getElementById("slide2").classList.add("active");
+    }
+
+    function keSlide1() {
+      document.getElementById("slide2").classList.remove("active");
+      document.getElementById("slide1").classList.add("active");
+    }
+
+    function hitungSukuN() {
+      var jarakPerHari = document.getElementById("inputJarakPerHari").value;
+      var jarakGantiOli = document.getElementById("inputJarakGantiOli").value;
+      var n = document.getElementById("inputSukuN").value;
+
+      if (jarakPerHari <= 0 || jarakGantiOli <= 0 || n <= 0) {
+          alert("Masukkan angka yang valid!");
+          return;
+      }
+
+      var a = Math.ceil(jarakGantiOli / jarakPerHari); // Hari ganti oli pertama
+      var b = a; // Selisih antar pergantian tetap sama
+
+      var Un = a + (n - 1) * b; // Rumus barisan aritmatika: Un = a + (n-1)b
+
+      document.getElementById("hasilSukuN").innerHTML = 
+          "Hari ke-" + Un + " untuk pergantian oli ke-" + n;
+    }
+  </script>
+
+
+</body></html>
